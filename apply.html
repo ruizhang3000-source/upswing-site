@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>Upswing Home Loans — Loan Application (concept)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#141038; --ink-soft:#5a5685; --primary:#5836FF; --primary-deep:#3d1fd6;
+    --mint:#13E08A; --mint-deep:#0bb06c; --coral:#FF7A59;
+    --surface:#F5F4FF; --surface-2:#FbFAFF; --line:#E4E1FA; --line-2:#EFEDFC; --white:#fff;
+    --display:"Bricolage Grotesque",system-ui,sans-serif;
+    --body:"Plus Jakarta Sans",system-ui,sans-serif;
+    --mono:"Space Mono",ui-monospace,monospace;
+    --shadow:0 18px 50px -22px rgba(40,24,140,.4);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--body);color:var(--ink);background:var(--surface-2);line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{width:min(1080px,94vw);margin-inline:auto}
+  .mono{font-family:var(--mono);font-size:.7rem;letter-spacing:.09em;text-transform:uppercase}
+
+  /* header */
+  header{background:var(--ink);color:#fff;padding:18px 0}
+  header .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .logo{display:flex;align-items:center;gap:11px;font-family:var(--display);font-weight:800;font-size:1.3rem}
+  .secure{display:flex;align-items:center;gap:8px;font-size:.82rem;color:#cfcaf3;background:rgba(255,255,255,.07);padding:8px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.12)}
+  .secure .lock{color:var(--mint)}
+
+  /* title band */
+  .band{background:
+     radial-gradient(80% 120% at 100% 0%, rgba(88,54,255,.10), transparent 60%),
+     radial-gradient(70% 100% at 0% 100%, rgba(19,224,138,.12), transparent 55%),
+     var(--white);border-bottom:1px solid var(--line);padding:40px 0 28px}
+  .band h1{font-family:var(--display);font-weight:800;font-size:clamp(1.9rem,3.6vw,2.6rem);letter-spacing:-.02em}
+  .band p{color:var(--ink-soft);max-width:60ch;margin-top:10px}
+  .band .pill{display:inline-flex;gap:8px;align-items:center;color:var(--primary);background:#fff;border:1px solid var(--line);padding:6px 13px;border-radius:999px;font-weight:700;font-size:.78rem;box-shadow:var(--shadow);margin-bottom:14px}
+  .band .pill .dot{width:7px;height:7px;border-radius:50%;background:var(--mint)}
+
+  /* layout */
+  .layout{display:grid;grid-template-columns:230px 1fr;gap:34px;align-items:start;padding:30px 0 80px}
+  nav.steps{position:sticky;top:18px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px;box-shadow:var(--shadow)}
+  nav.steps a{display:flex;gap:11px;align-items:center;padding:10px 11px;border-radius:11px;color:var(--ink-soft);font-weight:600;font-size:.9rem;transition:background .15s,color .15s;text-decoration:none}
+  nav.steps a .num{font-family:var(--mono);font-size:.72rem;color:var(--primary);min-width:20px}
+  nav.steps a:hover{background:var(--surface);color:var(--ink)}
+  nav.steps a.active{background:var(--ink);color:#fff}
+  nav.steps a.active .num{color:var(--mint)}
+
+  main{min-width:0}
+  section.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:30px;margin-bottom:22px;scroll-margin-top:18px}
+  .sec-num{font-family:var(--mono);font-size:.74rem;color:var(--primary);display:block;margin-bottom:6px}
+  section.card>h2{font-family:var(--display);font-weight:700;font-size:1.5rem;letter-spacing:-.015em}
+  section.card>.intro{color:var(--ink-soft);margin-top:8px;font-size:.95rem;max-width:70ch}
+  h3.sub{font-family:var(--display);font-weight:600;font-size:1.08rem;margin:26px 0 4px}
+  .sub-note{color:var(--ink-soft);font-size:.86rem;margin-bottom:14px}
+
+  /* fields */
+  .grid{display:grid;gap:16px}
+  .g2{grid-template-columns:1fr 1fr}
+  .g3{grid-template-columns:1fr 1fr 1fr}
+  .field{display:flex;flex-direction:column;gap:6px}
+  label{font-weight:600;font-size:.84rem}
+  .req{color:var(--coral)}
+  input,select,textarea{width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:11px;font-family:var(--body);font-size:.95rem;background:#fff;color:var(--ink);transition:border-color .15s,box-shadow .15s}
+  textarea{min-height:84px;resize:vertical}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px rgba(88,54,255,.13)}
+  select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235836FF' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:34px}
+
+  /* purpose chips */
+  .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+  .chip{position:relative}
+  .chip input{position:absolute;opacity:0;inset:0;cursor:pointer}
+  .chip span{display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border:1.5px solid var(--line);border-radius:999px;font-weight:600;font-size:.88rem;cursor:pointer;transition:all .15s;user-select:none}
+  .chip input:checked+span{background:var(--primary);border-color:var(--primary);color:#fff}
+  .chip input:focus-visible+span{box-shadow:0 0 0 4px rgba(88,54,255,.2)}
+
+  /* applicant-type cards */
+  .typecards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}
+  .typecard{position:relative}
+  .typecard input{position:absolute;opacity:0;inset:0;cursor:pointer}
+  .typecard .body{border:1.5px solid var(--line);border-radius:15px;padding:18px;cursor:pointer;transition:all .15s;height:100%}
+  .typecard .body strong{font-family:var(--display);display:block;margin-bottom:5px}
+  .typecard .body small{color:var(--ink-soft)}
+  .typecard input:checked+.body{border-color:var(--primary);background:var(--surface);box-shadow:0 0 0 3px rgba(88,54,255,.12)}
+  .modeflag{margin-top:16px;background:var(--surface);border:1px dashed var(--line);border-radius:12px;padding:12px 15px;font-size:.88rem;color:var(--ink-soft)}
+  .modeflag b{color:var(--ink)}
+
+  /* repeatable tables */
+  .tablewrap{overflow-x:auto;margin-top:14px;border:1px solid var(--line);border-radius:14px}
+  table{width:100%;border-collapse:collapse;font-size:.86rem;min-width:640px}
+  thead th{background:var(--surface);text-align:left;padding:11px 12px;font-weight:700;font-size:.74rem;letter-spacing:.03em;text-transform:uppercase;color:var(--ink-soft);white-space:nowrap;border-bottom:1px solid var(--line)}
+  tbody td{padding:8px 10px;border-bottom:1px solid var(--line-2);vertical-align:middle}
+  tbody tr:last-child td{border-bottom:0}
+  tbody input,tbody select,tbody textarea{padding:8px 10px;font-size:.85rem;min-width:120px}
+  tbody textarea{min-height:38px}
+  .rm{background:#fff;border:1.5px solid var(--line);color:var(--coral);border-radius:9px;padding:7px 9px;cursor:pointer;font-weight:700;line-height:1;transition:all .15s}
+  .rm:hover{border-color:var(--coral);background:#fff5f2}
+
+  /* facility cards */
+  .facility{border:1.5px solid var(--line);border-radius:16px;padding:20px;margin-top:16px;position:relative;background:var(--surface-2)}
+  .facility .fhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+  .facility .ftag{font-family:var(--mono);font-size:.72rem;color:#fff;background:var(--primary);padding:4px 10px;border-radius:999px}
+
+  .addrow{display:inline-flex;align-items:center;gap:8px;margin-top:14px;background:var(--mint);color:var(--ink);border:0;border-radius:11px;padding:11px 18px;font-family:var(--body);font-weight:700;font-size:.9rem;cursor:pointer;transition:transform .15s,filter .15s}
+  .addrow:hover{transform:translateY(-2px);filter:brightness(1.03)}
+  .addrow.ghost{background:#fff;border:1.5px solid var(--line);color:var(--primary)}
+  .btnrow{display:flex;gap:10px;flex-wrap:wrap}
+
+  /* declarations */
+  .checks{display:grid;gap:11px;margin-top:6px}
+  .check{display:flex;gap:11px;align-items:flex-start;font-size:.92rem;font-weight:500;cursor:pointer}
+  .check input{width:20px;height:20px;accent-color:var(--primary);margin-top:1px;flex:0 0 auto}
+
+  /* nextsteps */
+  ol.flow{counter-reset:f;list-style:none;margin-top:14px;display:grid;gap:12px}
+  ol.flow li{counter-increment:f;display:flex;gap:14px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+  ol.flow li::before{content:counter(f);font-family:var(--display);font-weight:800;color:#fff;background:var(--primary);width:28px;height:28px;border-radius:8px;display:grid;place-items:center;flex:0 0 auto;font-size:.9rem}
+  .auto-mail{font-family:var(--mono);font-size:.82rem;color:var(--primary)}
+
+  /* privacy + submit */
+  .privacy{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;font-size:.88rem;color:var(--ink-soft);margin-top:14px}
+  .privacy h4{color:var(--ink);font-family:var(--display);margin-bottom:8px}
+  .privacy ul{margin:10px 0 0 18px;display:grid;gap:6px}
+  .submitbar{position:sticky;bottom:0;background:rgba(255,255,255,.9);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:16px 0;margin-top:10px}
+  .submitbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .submitbar small{color:var(--ink-soft);font-size:.8rem}
+  .submit{background:var(--primary);color:#fff;border:0;border-radius:12px;padding:15px 30px;font-family:var(--body);font-weight:700;font-size:1rem;cursor:pointer;box-shadow:0 10px 24px -10px rgba(88,54,255,.8);transition:transform .15s}
+  .submit:hover{transform:translateY(-2px)}
+
+  .badge-ph{display:inline-block;background:rgba(255,122,89,.15);color:var(--coral);padding:2px 8px;border-radius:6px;font-weight:700;font-family:var(--mono);font-size:.66rem}
+
+  @media(max-width:880px){
+    .layout{grid-template-columns:1fr}
+    nav.steps{position:static;display:flex;overflow-x:auto;gap:4px}
+    nav.steps a{white-space:nowrap}
+    .g2,.g3,.typecards{grid-template-columns:1fr}
+  }
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="logo" href="index.html">
+      <svg width="32" height="32" viewBox="0 0 34 34" fill="none" aria-hidden="true">
+        <rect width="34" height="34" rx="10" fill="#5836FF"/>
+        <path d="M7 22 C13 22, 14 9, 21 9" stroke="#13E08A" stroke-width="3.4" stroke-linecap="round" fill="none"/>
+        <path d="M17.5 9 H22.5 V14" stroke="#13E08A" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <circle cx="7" cy="22" r="2.4" fill="#fff"/>
+      </svg>
+      Upswing
+    </a>
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+      <a href="index.html" style="color:#cfcaf3;text-decoration:none;font-weight:600;font-size:.9rem">← Back to home</a>
+      <span class="secure"><span class="lock">🔒</span> Secure application · encrypted</span>
+    </div>
+  </div>
+</header>
+
+<div class="band">
+  <div class="wrap">
+    <div class="mono" style="margin-bottom:14px;color:var(--ink-soft)"><a href="index.html" style="color:var(--primary);text-decoration:none">Home</a> &nbsp;›&nbsp; Application</div>
+    <span class="pill"><span class="dot"></span> Home loan application · v4.3</span>
+    <h1>Let’s build your application.</h1>
+    <p>Complete this secure form so your broker understands your goals, the people and entities involved, your income, assets and liabilities. It saves automatically into your secure case file.</p>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="layout">
+
+    <!-- STEP NAV -->
+    <nav class="steps" id="stepnav">
+      <a href="#s1" class="active"><span class="num">01</span> Application</a>
+      <a href="#s2"><span class="num">02</span> Applicants</a>
+      <a href="#s3"><span class="num">03</span> Loan needs</a>
+      <a href="#s4"><span class="num">04</span> Assets</a>
+      <a href="#s5"><span class="num">05</span> Liabilities</a>
+      <a href="#s6"><span class="num">06</span> Income</a>
+      <a href="#s7"><span class="num">07</span> Expenses</a>
+      <a href="#s8"><span class="num">08</span> Documents</a>
+      <a href="#s9"><span class="num">09</span> Declarations</a>
+      <a href="#s10"><span class="num">10</span> Next steps</a>
+    </nav>
+
+    <main>
+      <!-- 1 APPLICATION DETAILS -->
+      <section class="card" id="s1">
+        <span class="sec-num">Section 01</span>
+        <h2>Application details</h2>
+        <p class="intro">Your main contact details and a simple summary of what you’d like to do. Individual loan splits are captured later.</p>
+        <div class="grid g2" style="margin-top:18px">
+          <div class="field"><label>Case name</label><input type="text" placeholder="e.g. Smith — Refinance 2026"></div>
+          <div class="field"><label>Client group name</label><input type="text" placeholder="e.g. The Smith Family"></div>
+          <div class="field"><label>Primary contact <span class="req">*</span></label><input type="text" placeholder="Full name"></div>
+          <div class="field"><label>Primary contact email <span class="req">*</span></label><input type="email" placeholder="you@email.com"></div>
+          <div class="field"><label>Primary contact phone <span class="req">*</span></label><input type="tel" placeholder="04xx xxx xxx"></div>
+          <div class="field"><label>Target settlement / deadline</label><input type="date"></div>
+        </div>
+
+        <h3 class="sub">Broker / referrer details</h3>
+        <p class="sub-note">Optional — complete this when the application comes through a broker, referrer or partner.</p>
+        <div class="grid g3">
+          <div class="field"><label>Broker name</label><input type="text"></div>
+          <div class="field"><label>Broker email</label><input type="email"></div>
+          <div class="field"><label>Broker phone</label><input type="tel"></div>
+        </div>
+
+        <h3 class="sub">Overall application purpose</h3>
+        <div class="chips">
+          <label class="chip"><input type="checkbox"><span>Purchase</span></label>
+          <label class="chip"><input type="checkbox"><span>Refinance</span></label>
+          <label class="chip"><input type="checkbox"><span>Equity release / cash out</span></label>
+          <label class="chip"><input type="checkbox"><span>Construction</span></label>
+          <label class="chip"><input type="checkbox"><span>Debt consolidation</span></label>
+          <label class="chip"><input type="checkbox"><span>Business / investment purpose</span></label>
+        </div>
+        <div class="field" style="margin-top:18px"><label>Brief summary of what you need</label><textarea placeholder="Tell us the goal in a sentence or two…"></textarea></div>
+      </section>
+
+      <!-- 2 APPLICANTS -->
+      <section class="card" id="s2">
+        <span class="sec-num">Section 02</span>
+        <h2>Applicant details</h2>
+        <p class="intro">Choose your applicant type first. Names you add here become selectable choices in every later section.</p>
+
+        <h3 class="sub">Choose your applicant type</h3>
+        <div class="typecards">
+          <label class="typecard"><input type="radio" name="apptype" value="simple" checked onchange="setMode(this.value)">
+            <div class="body"><strong>Simple — personal applicant(s)</strong><small>One or more individuals applying personally. You can still add multiple loan facilities.</small></div></label>
+          <label class="typecard"><input type="radio" name="apptype" value="complex" onchange="setMode(this.value)">
+            <div class="body"><strong>Complex — company / trust / SMSF / investor</strong><small>For companies, trusts, SMSFs, guarantors, directors, trustees or mixed structures.</small></div></label>
+        </div>
+        <div class="modeflag" id="modeflag"><b>Simple mode selected:</b> add all personal applicants below. You can still add more loan facilities if you have more than one split.</div>
+
+        <h3 class="sub">Individual applicant(s)</h3>
+        <p class="sub-note">Add each person applying personally.</p>
+        <div class="tablewrap"><table id="t-applicants"><thead><tr>
+          <th>Full name</th><th>DOB</th><th>Residency</th><th>Marital status</th><th>Email</th><th>Phone</th><th>Role</th><th></th>
+        </tr></thead><tbody></tbody></table></div>
+        <button class="addrow" onclick="addApplicant()">+ Add individual</button>
+
+        <div id="complexBlock" hidden>
+          <h3 class="sub">Companies / trusts / SMSFs / partnerships</h3>
+          <p class="sub-note">Only if an entity is part of the application. Once created, entities become choices in loan, ownership and document sections.</p>
+          <div class="tablewrap"><table id="t-entities"><thead><tr>
+            <th>Entity name</th><th>Entity type</th><th>ABN / ACN</th><th>Trustee / directors</th><th>Roles in case</th><th>Notes</th><th></th>
+          </tr></thead><tbody></tbody></table></div>
+          <button class="addrow" onclick="addEntity()">+ Add entity</button>
+        </div>
+      </section>
+
+      <!-- 3 LOAN -->
+      <section class="card" id="s3">
+        <span class="sec-num">Section 03</span>
+        <h2>Loan requirements</h2>
+        <p class="intro">Add a facility for each separate loan or split — for example one home loan and one investment loan.</p>
+        <div id="facilities"></div>
+        <div class="btnrow">
+          <button class="addrow" onclick="addFacility()">+ Add another facility</button>
+          <button class="addrow ghost" onclick="duplicateFacility()">⧉ Duplicate last</button>
+        </div>
+      </section>
+
+      <!-- 4 ASSETS -->
+      <section class="card" id="s4">
+        <span class="sec-num">Section 04</span>
+        <h2>Assets &amp; security</h2>
+        <p class="intro">Enter each asset once, then link it to the relevant facility if it’s used as security.</p>
+        <div class="tablewrap"><table id="t-assets"><thead><tr>
+          <th>Asset type</th><th>Owner</th><th>Address / description</th><th>Value (AUD)</th><th>Existing debt</th><th>Security?</th><th>Linked facility</th><th>Priority</th><th></th>
+        </tr></thead><tbody></tbody></table></div>
+        <button class="addrow" onclick="addAsset()">+ Add asset</button>
+      </section>
+
+      <!-- 5 LIABILITIES -->
+      <section class="card" id="s5">
+        <span class="sec-num">Section 05</span>
+        <h2>Liabilities / debts</h2>
+        <p class="intro">Link each debt to the relevant party and facility. If a loan is being paid out, enter the payout BSB and account so discharge details are captured upfront.</p>
+        <div class="tablewrap"><table id="t-liabilities"><thead><tr>
+          <th>Liability type</th><th>Lender</th><th>Borrower party</th><th>Linked facility</th><th>Limit</th><th>Balance</th><th>Repayment</th><th>Paid out?</th><th>Payout BSB</th><th>Payout acct</th><th></th>
+        </tr></thead><tbody></tbody></table></div>
+        <button class="addrow" onclick="addLiability()">+ Add liability</button>
+      </section>
+
+      <!-- 6 INCOME -->
+      <section class="card" id="s6">
+        <span class="sec-num">Section 06</span>
+        <h2>Income</h2>
+        <p class="intro">Income is linked to the party receiving it — PAYG, self-employed, rental, trust distributions and other recurring income.</p>
+        <div class="tablewrap"><table id="t-income"><thead><tr>
+          <th>Income party</th><th>Income type</th><th>Source</th><th>Gross (AUD)</th><th>Net (AUD)</th><th>Frequency</th><th>Verification</th><th></th>
+        </tr></thead><tbody></tbody></table></div>
+        <button class="addrow" onclick="addIncome()">+ Add income</button>
+      </section>
+
+      <!-- 7 EXPENSES -->
+      <section class="card" id="s7">
+        <span class="sec-num">Section 07</span>
+        <h2>Living expenses / commitments</h2>
+        <p class="intro">First add each expense owner (a person or household). Then add expense rows and select who each belongs to — this handles multiple families or households cleanly.</p>
+        <h3 class="sub">7A · Expense owners / households</h3>
+        <div class="tablewrap"><table id="t-expowners"><thead><tr>
+          <th>Owner / household</th><th>Basis</th><th>Adults</th><th>Dependants</th><th>Default frequency</th><th></th>
+        </tr></thead><tbody></tbody></table></div>
+        <button class="addrow" onclick="addExpOwner()">+ Add expense owner</button>
+
+        <h3 class="sub">7B · Expense details</h3>
+        <div class="tablewrap"><table id="t-expenses"><thead><tr>
+          <th>Owner / household</th><th>Category</th><th>Amount (AUD)</th><th>Frequency</th><th>Type</th><th></th>
+        </tr></thead><tbody></tbody></table></div>
+        <button class="addrow" onclick="addExpense()">+ Add expense</button>
+      </section>
+
+      <!-- 8 DOCS -->
+      <section class="card" id="s8">
+        <span class="sec-num">Section 08</span>
+        <h2>Document checklist</h2>
+        <p class="intro">Identify documents that may be relevant. After you submit, we’ll send a secure upload link.</p>
+        <div class="tablewrap"><table id="t-docs"><thead><tr>
+          <th>Document type</th><th>Related party</th><th>Related facility</th><th>Status</th><th>Notes</th><th></th>
+        </tr></thead><tbody></tbody></table></div>
+        <button class="addrow" onclick="addDoc()">+ Add document</button>
+      </section>
+
+      <!-- 9 DECLARATIONS -->
+      <section class="card" id="s9">
+        <span class="sec-num">Section 09</span>
+        <h2>Declarations</h2>
+        <div class="checks">
+          <label class="check"><input type="checkbox"> The information provided is true and correct.</label>
+          <label class="check"><input type="checkbox"> I consent to contact with employers / accountants if required.</label>
+          <label class="check"><input type="checkbox"> I consent to obtaining a credit report.</label>
+          <label class="check"><input type="checkbox"> I acknowledge the lender may request further documents.</label>
+          <label class="check"><input type="checkbox"> I acknowledge the privacy consent below.</label>
+          <label class="check"><input type="checkbox"> I consent to electronic signature.</label>
+        </div>
+        <div class="grid g2" style="margin-top:18px">
+          <div class="field"><label>Applicant name</label><select class="party-select" data-party="all"><option value="">Create applicants above first</option></select></div>
+          <div class="field"><label>Date</label><input type="date"></div>
+        </div>
+      </section>
+
+      <!-- 10 NEXT -->
+      <section class="card" id="s10">
+        <span class="sec-num">Section 10</span>
+        <h2>What happens next</h2>
+        <p class="intro">Once your form is received we create a secure case folder, save a PDF copy of this application, and send a secure upload link to the primary contact and broker only.</p>
+        <ol class="flow">
+          <li>Complete and submit this application form.</li>
+          <li>We create a secure folder for your application.</li>
+          <li>A PDF copy of this form is saved into your case folder.</li>
+          <li>We email the primary contact and broker a secure upload link for ID, income, bank and loan statements.</li>
+          <li>We review your situation and discuss suitable lender options with you.</li>
+        </ol>
+        <p style="margin-top:14px;color:var(--ink-soft);font-size:.9rem">Automated emails will come from your applications mailbox once the live process is connected.</p>
+
+        <h3 class="sub">Privacy consent</h3>
+        <div class="privacy">
+          <h4>Collection, use and disclosure of your information</h4>
+          Upswing collects the personal, financial and credit-related information in this application so we can assess your enquiry, prepare your application, communicate with you, and submit or discuss it with relevant lenders, aggregators, service providers, credit reporting bodies, valuers, insurers, solicitors and accountants involved in arranging or assessing finance.
+          <ul>
+            <li>Information may include identity, contact, income, expenses, assets, liabilities, employment, entity, property and security details, and supporting documents.</li>
+            <li>We use it to verify details, assess options, meet legal and compliance obligations, manage your file and contact you about this application.</li>
+            <li>We may disclose relevant information to lenders and service providers so they can assess and process the application.</li>
+            <li>You can ask to access or correct your information, or ask how it’s handled, by contacting Upswing.</li>
+          </ul>
+          <label class="check" style="margin-top:14px"><input type="checkbox"> I have read and understood this privacy consent, and I consent to Upswing collecting, using and disclosing my personal, financial and credit-related information as described.</label>
+        </div>
+      </section>
+    </main>
+  </div>
+  <div style="text-align:center;padding:0 0 34px">
+    <a href="index.html" style="color:var(--primary);font-weight:700;text-decoration:none">← Return to Upswing home</a>
+  </div>
+</div>
+
+<div class="submitbar">
+  <div class="wrap">
+    <small><span class="badge-ph">Preview</span> This form is a preview and isn’t connected to live processing yet — please don’t enter real personal or financial details.</small>
+    <button class="submit" onclick="fakeSubmit()">Submit application →</button>
+  </div>
+</div>
+
+<script>
+/* ---------- option lists ---------- */
+const O = {
+  residency:["Australian Citizen","Permanent Resident","Temporary Resident","Foreign Resident"],
+  marital:["Single","Married","De Facto","Separated","Divorced"],
+  role:["Applicant / Borrower","Co-applicant / Co-borrower","Guarantor","Director","Trustee","Beneficiary","Asset Owner","Security Provider","Primary Contact","Other"],
+  entityType:["Company","Trust","Company Trustee for Trust","SMSF","Partnership"],
+  assetType:["Residential Property","Commercial Property","Land","Vehicle","Business Asset","Cash / Savings","Shares","Other"],
+  yesno:["Yes","No","To be confirmed"],
+  priority:["First Mortgage","Second Mortgage","Caveat","GSA","Other"],
+  liabType:["Home Loan","Investment Loan","Credit Card","Personal Loan","Car Loan","Business Loan","Tax Debt","Other"],
+  paidout:["No","Yes","Partial","To confirm"],
+  incomeType:["PAYG Salary","Self-Employed","Rental Income","Trust Distribution","Dividend","Centrelink","Other"],
+  freq:["Annual","Monthly","Fortnightly","Weekly"],
+  verification:["Not provided","Payslip","Tax Return","Financials","Bank Statements","Letter"],
+  basis:["Actual declared expenses","HEM benchmark to compare","Both actual and benchmark"],
+  expCat:["Food / Groceries","Utilities","Insurance","Transport","Education","Medical","Childcare","Entertainment","Other"],
+  expType:["Family / household","Individual person","All applicants jointly","Other"],
+  docType:["ID","Payslip","Bank Statement","Tax Return","Company Financials","Trust Deed","Contract of Sale","Rates Notice","Loan Statement","Other"],
+  docStatus:["Required","Received","Missing","Not applicable"],
+  repayment:["Principal & Interest","Interest Only","Mixed"],
+  interest:["Variable","Fixed","Split Fixed / Variable"],
+  term:["30 years","25 years","20 years","15 years","Other"],
+  loanPurpose:["Purchase","Refinance","Equity Release","Construction","Debt Consolidation","Business Purpose"],
+  borrowerStruct:["Individual","Joint Individuals","Company","Trust","Company Trustee for Trust","SMSF","Partnership","Mixed Structure"]
+};
+const opts = a => a.map(o=>`<option>${o}</option>`).join('');
+const sel = (cls,a,ph="") => `<select${cls?` class="${cls}"`:''}>${ph?`<option value="">${ph}</option>`:''}${opts(a)}</select>`;
+
+/* ---------- party registry ---------- */
+let parties = [];            // {name, kind:'individual'|'entity'|'family'}
+function rebuildParties(){
+  parties = [];
+  document.querySelectorAll('#t-applicants .pname').forEach(i=>{ if(i.value.trim()) parties.push({name:i.value.trim(),kind:'individual'}); });
+  document.querySelectorAll('#t-entities .ename').forEach(i=>{ if(i.value.trim()) parties.push({name:i.value.trim(),kind:'entity'}); });
+  document.querySelectorAll('#t-expowners .oname').forEach(i=>{ if(i.value.trim()) parties.push({name:i.value.trim(),kind:'owner'}); });
+  refreshPartySelects();
+}
+function refreshPartySelects(){
+  document.querySelectorAll('.party-select').forEach(s=>{
+    const want = s.dataset.party; // 'all' | 'people' | 'owners'
+    let list = parties;
+    if(want==='people') list = parties.filter(p=>p.kind!=='owner');
+    if(want==='owners') list = parties.filter(p=>p.kind==='owner'||p.kind==='individual');
+    const cur = s.value;
+    const ph = list.length? 'Select…' : 'Create parties above first';
+    s.innerHTML = `<option value="">${ph}</option>` + list.map(p=>`<option>${p.name}</option>`).join('');
+    if([...s.options].some(o=>o.value===cur)) s.value = cur;
+  });
+}
+function facilityOptions(){
+  const n = document.querySelectorAll('#facilities .facility').length || 1;
+  let o=''; for(let i=1;i<=n;i++) o+=`<option>Loan ${i}</option>`; return o;
+}
+function refreshFacilitySelects(){
+  document.querySelectorAll('.fac-select').forEach(s=>{const c=s.value;s.innerHTML=facilityOptions();if([...s.options].some(o=>o.value===c))s.value=c;});
+}
+
+/* ---------- generic row add ---------- */
+function addRow(tableId, html){
+  const tb = document.querySelector('#'+tableId+' tbody');
+  const tr = document.createElement('tr');
+  tr.innerHTML = html + `<td><button class="rm" onclick="this.closest('tr').remove();rebuildParties();refreshFacilitySelects()" aria-label="Remove">✕</button></td>`;
+  tb.appendChild(tr);
+  tr.querySelectorAll('.pname,.ename,.oname').forEach(i=>i.addEventListener('input',rebuildParties));
+  rebuildParties(); refreshFacilitySelects();
+}
+
+const addApplicant = () => addRow('t-applicants',
+  `<td><input class="pname" placeholder="Full name"></td><td><input type="date"></td>
+   <td>${sel('',O.residency)}</td><td>${sel('',O.marital)}</td>
+   <td><input type="email" placeholder="Email"></td><td><input type="tel" placeholder="Phone"></td>
+   <td>${sel('',O.role)}</td>`);
+
+const addEntity = () => addRow('t-entities',
+  `<td><input class="ename" placeholder="Entity name"></td><td>${sel('',O.entityType)}</td>
+   <td><input placeholder="ABN / ACN"></td><td><input placeholder="Trustee / directors"></td>
+   <td><input placeholder="Roles"></td><td><input placeholder="Notes"></td>`);
+
+const addAsset = () => addRow('t-assets',
+  `<td>${sel('',O.assetType)}</td><td>${sel('party-select" data-party="all',[])}</td>
+   <td><input placeholder="Address / description"></td><td><input placeholder="$"></td><td><input placeholder="$"></td>
+   <td>${sel('',O.yesno)}</td><td>${sel('fac-select',[])}</td><td>${sel('',O.priority)}</td>`);
+
+const addLiability = () => addRow('t-liabilities',
+  `<td>${sel('',O.liabType)}</td><td><input placeholder="Lender"></td><td>${sel('party-select" data-party="all',[])}</td>
+   <td>${sel('fac-select',[])}</td><td><input placeholder="$"></td><td><input placeholder="$"></td><td><input placeholder="$"></td>
+   <td>${sel('',O.paidout)}</td><td><input placeholder="BSB"></td><td><input placeholder="Account no."></td>`);
+
+const addIncome = () => addRow('t-income',
+  `<td>${sel('party-select" data-party="all',[])}</td><td>${sel('',O.incomeType)}</td>
+   <td><input placeholder="Employer / source"></td><td><input placeholder="$"></td><td><input placeholder="$"></td>
+   <td>${sel('',O.freq)}</td><td>${sel('',O.verification)}</td>`);
+
+const addExpOwner = () => addRow('t-expowners',
+  `<td><input class="oname" placeholder="Owner / household"></td><td>${sel('',O.basis)}</td>
+   <td><input type="number" min="0" style="min-width:70px"></td><td><input type="number" min="0" style="min-width:70px"></td>
+   <td>${sel('',O.freq)}</td>`);
+
+const addExpense = () => addRow('t-expenses',
+  `<td>${sel('party-select" data-party="owners',[])}</td><td>${sel('',O.expCat)}</td>
+   <td><input placeholder="$"></td><td>${sel('',O.freq)}</td><td>${sel('',O.expType)}</td>`);
+
+const addDoc = () => addRow('t-docs',
+  `<td>${sel('',O.docType)}</td><td>${sel('party-select" data-party="all',[])}</td>
+   <td>${sel('fac-select',[])}</td><td>${sel('',O.docStatus)}</td><td><input placeholder="Notes"></td>`);
+
+/* ---------- facilities ---------- */
+let facCount = 0;
+function facilityHTML(n){
+  return `<div class="facility">
+    <div class="fhead"><span class="ftag">Facility ${n}</span>
+      <button class="rm" onclick="this.closest('.facility').remove();refreshFacilitySelects()">Remove facility</button></div>
+    <div class="grid g3">
+      <div class="field"><label>Facility name</label><input placeholder="e.g. Owner-occupier loan"></div>
+      <div class="field"><label>Loan purpose</label>${sel('',O.loanPurpose)}</div>
+      <div class="field"><label>Amount requested (AUD)</label><input placeholder="$"></div>
+      <div class="field"><label>Borrower structure</label>${sel('',O.borrowerStruct)}</div>
+      <div class="field"><label>Borrower / applicant</label>${sel('party-select" data-party="all',[])}</div>
+      <div class="field"><label>Co-borrowers</label>${sel('party-select" data-party="all',[])}</div>
+      <div class="field"><label>Guarantors</label>${sel('party-select" data-party="all',[])}</div>
+      <div class="field"><label>Repayment type</label>${sel('',O.repayment)}</div>
+      <div class="field"><label>Interest type</label>${sel('',O.interest)}</div>
+      <div class="field"><label>Loan term</label>${sel('',O.term)}</div>
+      <div class="field"><label>Preferred lender</label><input placeholder="Optional"></div>
+      <div class="field"><label>Funds required for</label><input placeholder="Purpose of funds"></div>
+    </div></div>`;
+}
+function addFacility(){ facCount++; document.getElementById('facilities').insertAdjacentHTML('beforeend', facilityHTML(facCount)); rebuildParties(); refreshFacilitySelects(); }
+function duplicateFacility(){ addFacility(); }
+
+/* ---------- mode toggle ---------- */
+function setMode(m){
+  document.getElementById('complexBlock').hidden = (m!=='complex');
+  document.getElementById('modeflag').innerHTML = m==='complex'
+    ? '<b>Complex mode selected:</b> add companies, trusts, SMSFs and guarantors below — they’ll appear as choices in the loan and ownership sections.'
+    : '<b>Simple mode selected:</b> add all personal applicants below. You can still add more loan facilities if you have more than one split.';
+}
+
+/* ---------- scroll spy ---------- */
+const navLinks = [...document.querySelectorAll('#stepnav a')];
+const secs = navLinks.map(a=>document.querySelector(a.getAttribute('href')));
+const spy = new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){
+  navLinks.forEach(l=>l.classList.toggle('active', l.getAttribute('href')==='#'+e.target.id));
+}})},{rootMargin:'-30% 0px -60% 0px'});
+secs.forEach(s=>spy.observe(s));
+
+function fakeSubmit(){
+  alert('Demo only — in the live version this submits to your Power Automate flow, creates the secure case folder, saves the PDF and emails the upload link.');
+}
+
+/* seed one row each so it feels alive */
+addApplicant(); addFacility(); addAsset(); addLiability(); addIncome(); addExpOwner(); addExpense(); addDoc();
+</script>
+</body>
+</html>
