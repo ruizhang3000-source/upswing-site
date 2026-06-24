@@ -416,17 +416,31 @@
   //  Inquiry form submit — Cloudflare Turnstile + POST to flow
   // ============================================================
   //
-  //  >>> ONE THING TO FILL IN <<<
-  //  Paste the SAME Power Automate HTTP-trigger URL that apply.html
-  //  posts to, between the quotes below. Until you do, the form will
-  //  show a friendly error instead of sending.
+  //  Shares the same Power Automate HTTP-trigger URL used by apply.html.
+  //  Extra source/enquiry fields tell the backend this is a homepage lead.
   //
-  const FLOW_URL = "PASTE_YOUR_POWER_AUTOMATE_FLOW_URL_HERE";
+  const FLOW_URL = "https://default0e0e6dca57b143149f2d73f9d2beac.f0.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/647d1889c81b413090dc135706e55e16/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=hvt4T8ma4EEiyn_-9QJJCPLUwzDvEhdAWh3EP_G26oc";
+
+  function genLeadId(){
+    return "INQ-" + Date.now().toString(36).toUpperCase() + "-" + Math.random().toString(36).slice(2,6).toUpperCase();
+  }
+  function sanitiseLeadFolder(v){
+    return (v||"").trim().replace(/[^A-Za-z0-9 _-]/g,"").replace(/\s+/g,"_").slice(0,60) || "Homepage_Enquiry";
+  }
+  function escapeHtml(v){
+    return String(v || '').replace(/[&<>"']/g, function(ch){
+      return {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[ch];
+    });
+  }
   //
-  //  NOTE ON FIELD NAMES: the JSON keys below (firstName, phone, email,
-  //  goal) must match what your flow's "Parse JSON" / SharePoint step
-  //  expects. If apply.html uses different keys, change these to match
-  //  so both forms feed SharePoint identically.
+  //  The payload keeps the core application fields used by apply.html
+  //  and adds lead-specific fields for routing and reporting.
   // ============================================================
 
   document.getElementById('leadForm').addEventListener('submit', function(e){
@@ -452,21 +466,45 @@
       return;
     }
 
-    // 3) guard: flow URL not set yet
-    if(FLOW_URL.indexOf('PASTE_') === 0){
-      err.textContent = 'Form is not connected yet — add your flow URL in the page code.';
-      err.style.display = 'block';
-      return;
-    }
+    // 3) build payload and POST
+    var firstName = document.getElementById('fn').value.trim();
+    var phone = document.getElementById('ph').value.trim();
+    var email = document.getElementById('em').value.trim();
+    var goal = document.getElementById('goal').value;
+    var enquiryId = genLeadId();
+    var caseLabel = 'Homepage enquiry - ' + goal;
+    var htmlInquiry =
+      '<!doctype html><html><head><meta charset="utf-8"><title>' + escapeHtml(caseLabel) +
+      '</title></head><body>' +
+      '<h1>Homepage enquiry</h1>' +
+      '<p><strong>Reference:</strong> ' + escapeHtml(enquiryId) + '</p>' +
+      '<p><strong>Name:</strong> ' + escapeHtml(firstName) + '</p>' +
+      '<p><strong>Phone:</strong> ' + escapeHtml(phone) + '</p>' +
+      '<p><strong>Email:</strong> ' + escapeHtml(email) + '</p>' +
+      '<p><strong>Goal:</strong> ' + escapeHtml(goal) + '</p>' +
+      '<p><strong>Source:</strong> www.up-swing.com.au homepage</p>' +
+      '</body></html>';
 
-    // 4) build payload and POST
     var payload = {
-      source: 'homepage-enquiry',
+      applicationId: enquiryId,
+      enquiryId: enquiryId,
+      source: 'up-swing-homepage-enquiry',
       business: 'Upswing Home Loans',
-      firstName: document.getElementById('fn').value.trim(),
-      phone:     document.getElementById('ph').value.trim(),
-      email:     document.getElementById('em').value.trim(),
-      goal:      document.getElementById('goal').value,
+      enquiryType: 'homepage-enquiry',
+      firstName: firstName,
+      customerName: firstName,
+      phone: phone,
+      email: email,
+      customerEmail: email,
+      correspondenceRecipientsCsv: email,
+      goal: goal,
+      caseName: caseLabel,
+      clientGroupName: '',
+      submittedAt: new Date().toISOString(),
+      folderName: sanitiseLeadFolder(caseLabel) + '_' + enquiryId,
+      htmlApplication: htmlInquiry,
+      cf_turnstile_response: token,
+      turnstileToken: token,
       'cf-turnstile-response': token
     };
 
